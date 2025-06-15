@@ -3,7 +3,10 @@
 
 typedef strutc Disco;
 
-void createDisco(Disco* disco);
+void criarDsico(Disco* disco);
+void destruir(Disco * disco);
+int desempilhar(Disco **pilha)
+void empilhar(Disco **pilha, int tamanho)
 void showDisco();
 void push(Disco *disco);
 void pop();
