@@ -1,5 +1,6 @@
 
 <h1 align="center"> Projeto final de Estrutura de Dados</h1>
+<<<<<<< refactor/featdesenharjogo
 _Grupo 5_ = { 
     ["Gustavo Brito"], 
     ["Isaac Ramos"], 
@@ -7,6 +8,15 @@ _Grupo 5_ = {
     ["Gustavo Barbosa"], 
     ["Rodrigo Castro Dantas"] 
     }
+=======
+_Grupo 5_ = {
+["Gustavo Brito"],
+["Isaac Ramos"],
+["Isaquiel Nathan"],
+["Gustavo Barbosa"],
+["Rodrigo Castro Dantas"]
+}
+>>>>>>> main
 
 
 <h2 align="center"> Jogo Torre de Hanoi</h2>
