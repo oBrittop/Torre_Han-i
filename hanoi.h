@@ -30,7 +30,10 @@ void liberarDiscosEstaca(Estaca *estaca); // Para liberar a memória dos discos 
 
 // --- Funções de Exibição e Lógica do Jogo de Hanói ---
 void preencherMatriz(Estaca *estaca, char matriz[ALTURA_MAX][20]);
-
+void mostrarTorres(Estaca *A, Estaca *B, Estaca *C);
+int venceu(Estaca *C, int total_discos);
+Estaca* getEstaca(char c, Estaca *A, Estaca *B, Estaca *C);
+void jogarHanoi();
 
 
 
