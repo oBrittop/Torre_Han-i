@@ -1,24 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#define ALTURA_MAX 5
-#define LARGURA_TOTAL 30
-#define QTD_ESTACAS 3
-
-typedef struct Disco {
-    int tamanho;
-    struct Disco *prox;
-} Disco;
+#include <string.h>
+#include <unistd.h> 
+#include "hanoi.h"
 
 Disco *top = NULL;
-
-typedef struct Estaca {
-    Disco *topo;
-    char nome;
-} Estaca;
-
-
-
 void criarDisco(Disco* disco) {
     top = disco;
     disco->prox = NULL;
@@ -57,83 +43,108 @@ int topo(Estaca *estaca) {
     return estaca->topo ? estaca->topo->tamanho : 999;
 }
 
-void desenharJogo(Estaca estacas[]) {
-    char matriz[ALTURA_MAX + 2][LARGURA_TOTAL]; // +2 para a base e nomes
-    int posicao[] = {2, 12, 22}; 
+int estacaEstaVazia(Estaca *estaca) {
+    return estaca->topo == NULL;
+}
 
-    // 1. Limpa a matriz com espaços
-    memset(matriz, ' ', sizeof(matriz));
-
-    // 2. Prepara cada linha para ser uma string
-    for (int i = 0; i < ALTURA_MAX + 2; i++) {
-        matriz[i][LARGURA_TOTAL - 1] = '\0';
+void liberarDiscosEstaca(Estaca *estaca) {
+    Disco *atual = estaca->topo;
+    Disco *proximo;
+    while (atual != NULL) {
+        proximo = atual->prox;
+        free(atual);
+        atual = proximo;
     }
-
-    // 3. Desenha os discos de cada estaca
-    for (int i = 0; i < QTD_ESTACAS; i++) {
-        // Desenha a base da estaca e o nome
-        matriz[ALTURA_MAX][posicao[i] - 1] = '=';
-        matriz[ALTURA_MAX][posicao[i]] = '|';
-        matriz[ALTURA_MAX][posicao[i] + 1] = '=';
-        matriz[ALTURA_MAX + 1][posicao[i]] = estacas[i].nome;
-
-        Disco *atual = estacas[i].topo;
-        int nivel = ALTURA_MAX - 1;
-
-        // Percorre a pilha de discos e desenha na matriz
-        while (atual != NULL && nivel >= 0) {
-            int tamanhoDisco = atual->tamanho;
-            int inicio = posicao[i] - (tamanhoDisco / 2);
-
-            for(int j = 0; j < tamanhoDisco; j++){
-                matriz[nivel][inicio + j] = '=';
-            }
-
-            // Vai para o próximo disco e sobe um nível na matriz
-            atual = atual->prox;
-            nivel--;
-        }
-    }
-
-
-    system("clear || cls"); 
-    printf("--- TORRE DE HANOI ---\n");
-    for (int i = 0; i < ALTURA_MAX + 2; i++) {
-        printf("%s\n", matriz[i]);
-    }
-    printf("----------------------\n");
+    estaca->topo = NULL; // topo e NULL apos a liberação
 }
 
 
-int main() {
-    Estaca estacas[QTD_ESTACAS];
-    estacas[0] = (Estaca){.topo = NULL, .nome = 'A'};
-    estacas[1] = (Estaca){.topo = NULL, .nome = 'B'};
-    estacas[2] = (Estaca){.topo = NULL, .nome = 'C'};
 
-    int numDiscos = 3;
 
-    // Empilha os discos na primeira torre (maior para o menor)
-    for (int i = numDiscos; i > 0; i--) {
-        empilhar(&estacas[0].topo, i * 2 + 1); // Tamanhos ímpares para centralizar bem
+void preencherMatriz(Estaca *estaca, char matriz[ALTURA_MAX][20]) {
+    for (int i = 0; i < ALTURA_MAX; i++) {
+        for (int j = 0; j < 9; j++) matriz[i][j] = ' ';
+        matriz[i][9] = '\0';
     }
+    Disco *atual = estaca->topo;
+    int linha = ALTURA_MAX - 1; // Comeca de baixo para cima
+    int count = 0;
+    Disco *temp = estaca->topo;
 
-    // Exibe o estado inicial do jogo
-    desenharJogo(estacas);
-
-    // Exemplo de movimento: Mover de A para B
-    printf("Movendo disco do topo de A para B...\n");
-    int discoMovido = desempilhar(&estacas[0].topo);
-    if(discoMovido != -1) {
-        empilhar(&estacas[1].topo, discoMovido);
+    while(temp != NULL) { // Topo valido chama o prox
+        count++;
+        temp = temp->prox;
     }
-    getchar(); // Pausa para ver o movimento
+    linha = ALTURA_MAX - count;// atualiza posição do topo
+    atual = estaca->topo;// reseta ponteiro 
 
-    // Exibe o jogo após o movimento
-    desenharJogo(estacas);
+    while (atual != NULL && linha < ALTURA_MAX) {
+    int tam = atual->tamanho;
+    int espacos = 5 - tam; // 5 é a metade da largura máxima do disco (9) -1
+    int i = 0;
 
-    return 0;
+    for (; i < espacos; i++) matriz[linha][i] = ' ';
+    for (int j = 0; j < tam * 2 - 1; j++, i++) matriz[linha][i] = '#';
+    for (; i < 9; i++) matriz[linha][i] = ' ';
+    matriz[linha][i] = '\0';
+    atual = atual->prox;
+    linha++;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int main() {
+//     Estaca estacas[QTD_ESTACAS];
+//     estacas[0] = (Estaca){.topo = NULL, .nome = 'A'};
+//     estacas[1] = (Estaca){.topo = NULL, .nome = 'B'};
+//     estacas[2] = (Estaca){.topo = NULL, .nome = 'C'};
+
+//     int numDiscos = 3;
+
+//     // Empilha os discos na primeira torre (maior para o menor)
+//     for (int i = numDiscos; i > 0; i--) {
+//         empilhar(&estacas[0].topo, i * 2 + 1); // Tamanhos ímpares para centralizar bem
+//     }
+
+//     // Exibe o estado inicial do jogo
+//     desenharJogo(estacas);
+
+//     // Exemplo de movimento: Mover de A para B
+//     printf("Movendo disco do topo de A para B...\n");
+//     int discoMovido = desempilhar(&estacas[0].topo);
+//     if(discoMovido != -1) {
+//         empilhar(&estacas[1].topo, discoMovido);
+//     }
+//     getchar(); // Pausa para ver o movimento
+
+//     // Exibe o jogo após o movimento
+//     desenharJogo(estacas);
+
+//     return 0;
+// }
 
 
 
