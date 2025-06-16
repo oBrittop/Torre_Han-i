@@ -58,9 +58,6 @@ void liberarDiscosEstaca(Estaca *estaca) {
     estaca->topo = NULL; // topo e NULL apos a liberação
 }
 
-
-
-
 void preencherMatriz(Estaca *estaca, char matriz[ALTURA_MAX][20]) {
     for (int i = 0; i < ALTURA_MAX; i++) {
         for (int j = 0; j < 9; j++) matriz[i][j] = ' ';
@@ -87,6 +84,7 @@ void preencherMatriz(Estaca *estaca, char matriz[ALTURA_MAX][20]) {
     for (int j = 0; j < tam * 2 - 1; j++, i++) matriz[linha][i] = '#';
     for (; i < 9; i++) matriz[linha][i] = ' ';
     matriz[linha][i] = '\0';
+
     atual = atual->prox;
     linha++;
     }
