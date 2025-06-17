@@ -4,18 +4,6 @@
 #include <unistd.h> 
 #include "hanoi.h"
 
-Disco *top = NULL;
-void criarDisco(Disco* disco) {
-    top = disco;
-    disco->prox = NULL;
-}
-
-void destruir(Disco * disco) {
-	if (disco != NULL) {
-		free(disco);
-	}
-}
-
 int desempilhar(Disco **pilha){
     if(*pilha == NULL){
         printf("Pilha Vazia");
