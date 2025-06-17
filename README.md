@@ -5,7 +5,7 @@ _Grupo 5_ = {
     ["Isaac Ramos"], 
     ["Isaquiel Nathan"], 
     ["Gustavo Barbosa"], 
-    ["Rodrigo Castro Dantas"] 
+    ["Rodrigo Castro Dantas"]  
     }
 
 
