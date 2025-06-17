@@ -342,7 +342,39 @@ void salvarHistoricoEmArquivo(HistoricoPartida *lista, const char *nomeArquivo) 
     fclose(arquivo);
     printf("Historico salvo com sucesso em '%s'.\n", nomeArquivo);
 }
+void carregarHistoricoDoArquivo(HistoricoPartida **lista, const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de historico.\n");
+        return;
+    }
 
+    char linha[256];
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        HistoricoPartida *novoRegistro = malloc(sizeof(HistoricoPartida));
+        if (novoRegistro == NULL) {
+            printf("Erro ao alocar memoria para o historico.\n");
+            fclose(arquivo);
+            return;
+        }
+
+        sscanf(linha, "%49[^;];%d;%d;%19[^\n]", novoRegistro->nomeJogador, &novoRegistro->movimentos, &novoRegistro->numDiscos, novoRegistro->dataHora);
+        novoRegistro->prox = *lista;
+        *lista = novoRegistro;
+    }
+
+    fclose(arquivo);
+    printf("Historico carregado com sucesso de '%s'.\n", nomeArquivo);
+}
+void liberarHistorico(HistoricoPartida **lista) {
+    HistoricoPartida *atual = *lista;
+    while (atual != NULL) {
+        HistoricoPartida *temp = atual;
+        atual = atual->prox;
+        free(temp);
+    }
+    *lista = NULL; // Define a lista como NULL após liberar
+}
 
 
 
