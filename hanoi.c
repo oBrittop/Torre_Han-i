@@ -225,9 +225,87 @@ void jogarHanoi() {
     }
 }
 
+void gerarDataHora(char *buffer, int bufferSize) {
+    time_t rawtime;
+    struct tm *infoTempo;
+    time(&rawtime);
+    infoTempo = localtime(&rawtime);
+    strftime(buffer, bufferSize, "%Y-%m-%d %H:%M:%S", infoTempo);
 }
 
+void adicionarHistorico(HistoricoPartida **lista, int movimentos, const char *nome, int discos) {
+    HistoricoPartida *novoRegistro = malloc(sizeof(HistoricoPartida));
+    if (novoRegistro == NULL) {
+        printf("Ocorreu um erro ao alocar a memoria para o historico!!\n");
+        return;
+    }
 
+     novoRegistro->movimentos = movimentos;
+    strncpy(novoRegistro->nomeJogador, nome, sizeof(novoRegistro->nomeJogador) - 1);
+    novoRegistro->nomeJogador[sizeof(novoRegistro->nomeJogador) - 1] = '\0';
+    novoRegistro->numDiscos = discos;
+    gerarDataHora(novoRegistro->dataHora, sizeof(novoRegistro->dataHora));
+
+    novoRegistro->prox = *lista;
+    *lista = novoRegistro;
+}
+
+void exibirHistorico(HistoricoPartida *lista) {
+    system("cls || clear");
+    printf("--- HISTORICO DE PARTIDAS ---\n");
+    if (lista == NULL) {
+        printf("Nenhum historico esta disponivel.\n");
+        printf("Pressione ENTER para voltar ao menu...");
+        getchar(); getchar();
+        return;
+    }
+
+    HistoricoPartida *atual = lista;
+    while (atual != NULL) {
+        printf("-----------------------------\n");
+        printf("Jogador: %s\n", atual->nomeJogador);
+        printf("Movimentos: %d\n", atual->movimentos);
+        printf("Discos: %d\n", atual->numDiscos);  
+        printf("Data/Hora: %s\n", atual->dataHora);
+        atual = atual->prox;
+    }
+    printf("-----------------------------\n");
+    printf("Pressione ENTER para voltar ao menu...");
+    getchar(); getchar();
+}
+
+void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome) {
+    system("cls || clear");
+    printf("--- BUSCAR PARTIDA POR NOME ---\n");
+    if (lista == NULL) {
+        printf("Nenhum historico disponivel para busca.\n");
+        printf("Pressione ENTER para voltar ao menu...");
+        getchar(); getchar();
+        return;
+    }
+
+    int encontrado = 0;
+    HistoricoPartida *atual = lista;
+    while (atual != NULL) {
+        if (strstr(atual->nomeJogador, nome) != NULL) {
+            printf("-----------------------------\n");
+            printf("Jogador: %s\n", atual->nomeJogador);
+            printf("Discos: %d\n", atual->numDiscos);
+            printf("Movimentos: %d\n", atual->movimentos);
+            printf("Data/Hora: %s\n", atual->dataHora);
+            encontrado = 1;
+        }
+        atual = atual->prox;
+    }
+
+    if (!encontrado) {
+        printf("Nenhuma partida encontrada para o jogador '%s'.\n", nome);
+    }
+
+    printf("-----------------------------\n");
+    printf("Pressione ENTER para voltar ao menu...");
+    getchar(); getchar();
+}
 
 
 

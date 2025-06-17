@@ -39,13 +39,24 @@ void jogarHanoi();
 
 // --- Estrutura de Dados do Histórico de Partidas ---
 
+typedef struct HistoricoPartida {
+    int movimentos;
+    char nomeJogador[50];
+    int numDiscos;
+    char dataHora[20];
+    struct HistoricoPartida *prox;
+} HistoricoPartida;
+
 
 
 
 
 // --- Funções de Manipulação do Histórico ---
 
-
+void gerarDataHora(char *buffer, int bufferSize);
+void adicionarHistorico(HistoricoPartida **lista, int movimentos, const char *nome, int discos);
+void exibirHistorico(HistoricoPartida *lista);
+void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome);
 
 
 
