@@ -8,14 +8,7 @@ _Grupo 5_ = {
     ["Rodrigo Castro Dantas"]  
     }
 
-
 <h2 align="center"> Jogo Torre de Hanoi</h2>
-
-__Optamos por fazer uma__
-
-
-
-
 ---
 
 ## 🏗️ Estrutura e Arquitetura do Projeto
@@ -61,5 +54,6 @@ Este arquivo contém a **lógica interna** e o "recheio" das funções declarada
 Com essa estrutura, o comando para compilar o projeto une os arquivos de implementação:
 ```bash
 gcc main.c torre_hanoi.c -o jogo_torre_de_hanoi
+```
 
 
