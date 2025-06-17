@@ -405,7 +405,7 @@ void liberarHistorico(HistoricoPartida **lista) {
         atual = atual->prox;
         free(temp);
     }
-    *lista = NULL; // Define a lista como NULL após liberar
+    *lista = NULL;
 }
 
 void exibirMenu() {
