@@ -59,5 +59,8 @@ void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome);
 
 void buscarhistoricopordata(HistoricoPartida *lista, const char *data);
 void salvarhistoricoemarquivo(HistoricoPartida *lista, const char *nomeArquivo);
+void carregarhistoricodoarquivo(HistoricoPartida **lista, const char *nomeArquivo);
+void liberarHistorico(HistoricoPartida **lista);
+
 
 #endif
