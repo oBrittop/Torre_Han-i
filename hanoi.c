@@ -4,6 +4,8 @@
 #include <unistd.h> 
 #include "hanoi.h"
 
+
+
 int desempilhar(Disco **pilha){
     if(*pilha == NULL){
         printf("Pilha Vazia");
@@ -17,7 +19,7 @@ int desempilhar(Disco **pilha){
 
 }
 
-void empilhar(Disco **pilha, int tamanho){
+int empilhar(Disco **pilha, int tamanho){
     Disco *novoDisco = malloc(sizeof(Disco));
     if(novoDisco == NULL){
         printf("Erro ao Alocar Memoria!!\n");
@@ -78,6 +80,8 @@ void preencherMatriz(Estaca *estaca, char matriz[ALTURA_MAX][20]) {
     }
 }
 
+
+
 void mostrarTorres(Estaca *A, Estaca *B, Estaca *C) {
     char matrizA[ALTURA_MAXIMA][20];
     char matrizB[ALTURA_MAXIMA][20];
@@ -114,6 +118,11 @@ Estaca* getEstaca(char c, Estaca *A, Estaca *B, Estaca *C) {
     if (c == 'C' || c == 'c') return C;
     return NULL;
 }
+
+
+
+#define NOME_ARQUIVO_HISTORICO "historico.txt"
+HistoricoPartida *historicoGlobal = NULL;//guardar a lista de histórico de partidas. O tipo dela é HistoricoPartida *
 
 void jogarHanoi() {
     Estaca A = {NULL, 'A'};
@@ -295,9 +304,88 @@ void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome) {
     printf("Pressione ENTER para voltar ao menu...");
     getchar(); getchar();
 }
+void buscarHistoricoPorData(HistoricoPartida *lista, const char *data) {
+    system("cls || clear");
+    printf("--- BUSCAR PARTIDA POR DATA ---\n");
+    if (lista == NULL) {
+        printf("Nenhum historico disponivel para busca.\n");
+        printf("Pressione ENTER para voltar ao menu...");
+        getchar(); getchar();
+        return;
+    }
 
+    int encontrado = 0;
+    HistoricoPartida *atual = lista;
+    while (atual != NULL) {
+        if (strstr(atual->dataHora, data) != NULL) {
+            printf("-----------------------------\n");
+            printf("Jogador: %s\n", atual->nomeJogador);
+            printf("Discos: %d\n", atual->numDiscos);
+            printf("Movimentos: %d\n", atual->movimentos);
+            printf("Data/Hora: %s\n", atual->dataHora);
+            encontrado = 1;
+        }
+        atual = atual->prox;
+    }
 
+    if (!encontrado) {
+        printf("Nenhuma partida encontrada na data '%s'.\n", data);
+    }
 
+    printf("-----------------------------\n");
+    printf("Pressione ENTER para voltar ao menu...");
+    getchar(); getchar();
+
+}
+void salvarHistoricoEmArquivo(HistoricoPartida *lista, const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar o historico.\n");
+        return;
+    }
+
+    HistoricoPartida *atual = lista;
+    while (atual != NULL) {
+        fprintf(arquivo, "%s;%d;%d;%s\n", atual->nomeJogador, atual->movimentos, atual->numDiscos, atual->dataHora);
+        atual = atual->prox;
+    }
+
+    fclose(arquivo);
+    printf("Historico salvo com sucesso em '%s'.\n", nomeArquivo);
+}
+void carregarHistoricoDoArquivo(HistoricoPartida **lista, const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de historico.\n");
+        return;
+    }
+
+    char linha[256];
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        HistoricoPartida *novoRegistro = malloc(sizeof(HistoricoPartida));
+        if (novoRegistro == NULL) {
+            printf("Erro ao alocar memoria para o historico.\n");
+            fclose(arquivo);
+            return;
+        }
+
+        sscanf(linha, "%49[^;];%d;%d;%19[^\n]", novoRegistro->nomeJogador, &novoRegistro->movimentos, &novoRegistro->numDiscos, novoRegistro->dataHora);
+        novoRegistro->prox = *lista;
+        *lista = novoRegistro;
+    }
+
+    fclose(arquivo);
+    printf("Historico carregado com sucesso de '%s'.\n", nomeArquivo);
+}
+void liberarHistorico(HistoricoPartida **lista) {
+    HistoricoPartida *atual = *lista;
+    while (atual != NULL) {
+        HistoricoPartida *temp = atual;
+        atual = atual->prox;
+        free(temp);
+    }
+    *lista = NULL; // Define a lista como NULL após liberar
+}
 
 
 

@@ -21,7 +21,7 @@ typedef struct Estaca {
 
 
 // --- Funções de Manipulação da Pilha (Hanói) ---
-void empilhar(Disco **pilha, int tamanho);
+int empilhar(Disco **pilha, int tamanho);
 int desempilhar(Disco **pilha);
 int topo(Estaca *estaca);
 int estacaEstaVazia(Estaca *estaca);
@@ -57,7 +57,10 @@ void gerarDataHora(char *buffer, int bufferSize);
 void adicionarHistorico(HistoricoPartida **lista, int movimentos, const char *nome, int discos);
 void exibirHistorico(HistoricoPartida *lista);
 void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome);
-
+void buscarHistoricoPorData(HistoricoPartida *lista, const char *data);
+void salvarHistoricoEmArquivo(HistoricoPartida *lista, const char *nomeArquivo);
+void carregarHistoricoDoArquivo(HistoricoPartida **lista, const char *nomeArquivo);
+void liberarHistorico(HistoricoPartida **lista);
 
 
 
