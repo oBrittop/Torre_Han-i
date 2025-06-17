@@ -1,8 +1,9 @@
 #ifndef HANOI_GAME_H
 #define HANOI_GAME_H
 
+#include <time.h>
+
 #define MAX_DISCOS 5
-#define ALTURA_MAX 5
 #define ALTURA_MAXIMA MAX_DISCOS
 #define ESTACA_VAZIA 999
 
@@ -43,15 +44,9 @@ typedef struct HistoricoPartida {
     int movimentos;
     char nomeJogador[50];
     int numDiscos;
-    char dataHora[20];
+    char dataHora[30];
     struct HistoricoPartida *prox;
 } HistoricoPartida;
-
-
-
-
-
-// --- Funções de Manipulação do Histórico ---
 
 void gerarDataHora(char *buffer, int bufferSize);
 void adicionarHistorico(HistoricoPartida **lista, int movimentos, const char *nome, int discos);
@@ -61,6 +56,8 @@ void buscarHistoricoPorData(HistoricoPartida *lista, const char *data);
 void salvarHistoricoEmArquivo(HistoricoPartida *lista, const char *nomeArquivo);
 void carregarHistoricoDoArquivo(HistoricoPartida **lista, const char *nomeArquivo);
 void liberarHistorico(HistoricoPartida **lista);
+
+void exibirMenu();
 
 
 
