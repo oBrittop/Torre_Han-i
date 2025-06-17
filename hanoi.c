@@ -294,7 +294,54 @@ void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome) {
     printf("Pressione ENTER para voltar ao menu...");
     getchar(); getchar();
 }
+void buscarHistoricoPorData(HistoricoPartida *lista, const char *data) {
+    system("cls || clear");
+    printf("--- BUSCAR PARTIDA POR DATA ---\n");
+    if (lista == NULL) {
+        printf("Nenhum historico disponivel para busca.\n");
+        printf("Pressione ENTER para voltar ao menu...");
+        getchar(); getchar();
+        return;
+    }
 
+    int encontrado = 0;
+    HistoricoPartida *atual = lista;
+    while (atual != NULL) {
+        if (strstr(atual->dataHora, data) != NULL) {
+            printf("-----------------------------\n");
+            printf("Jogador: %s\n", atual->nomeJogador);
+            printf("Discos: %d\n", atual->numDiscos);
+            printf("Movimentos: %d\n", atual->movimentos);
+            printf("Data/Hora: %s\n", atual->dataHora);
+            encontrado = 1;
+        }
+        atual = atual->prox;
+    }
+
+    if (!encontrado) {
+        printf("Nenhuma partida encontrada na data '%s'.\n", data);
+    }
+
+    printf("-----------------------------\n");
+    printf("Pressione ENTER para voltar ao menu...");
+    getchar(); getchar();
+}
+void salvarHistoricoEmArquivo(HistoricoPartida *lista, const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar o historico.\n");
+        return;
+    }
+
+    HistoricoPartida *atual = lista;
+    while (atual != NULL) {
+        fprintf(arquivo, "%s;%d;%d;%s\n", atual->nomeJogador, atual->movimentos, atual->numDiscos, atual->dataHora);
+        atual = atual->prox;
+    }
+
+    fclose(arquivo);
+    printf("Historico salvo com sucesso em '%s'.\n", nomeArquivo);
+}
 
 
 
