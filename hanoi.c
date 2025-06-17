@@ -502,4 +502,3 @@ void buscarHistoricoPorNome(HistoricoPartida *lista, const char *nome) {
 
 
 
-
