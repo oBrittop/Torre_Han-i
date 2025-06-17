@@ -1,10 +1,9 @@
 #ifndef HANOI_GAME_H
 #define HANOI_GAME_H
 
-#define ALTURA_MAX 5
-#define LARGURA_TOTAL 30
-#define QTD_ESTACAS 3
-#define ESTACA_VAZIA 999 // Valor sentinela para estaca vazia
+#define MAX_DISCOS 5
+#define ALTURA_MAXIMA MAX_DISCOS
+#define ESTACA_VAZIA 999
 
 
 typedef struct Disco {
