@@ -19,26 +19,17 @@ typedef struct Estaca {
     char nome;
 } Estaca;
 
-
-
-// --- Funções de Manipulação da Pilha (Hanói) ---
 int empilhar(Disco **pilha, int tamanho);
 int desempilhar(Disco **pilha);
 int topo(Estaca *estaca);
 int estacaEstaVazia(Estaca *estaca);
-void liberarDiscosEstaca(Estaca *estaca); // Para liberar a memória dos discos de uma estaca
+void liberarDiscosEstaca(Estaca *estaca);
 
-
-// --- Funções de Exibição e Lógica do Jogo de Hanói ---
 void preencherMatriz(Estaca *estaca, char matriz[ALTURA_MAXIMA][20]);
 void mostrarTorres(Estaca *A, Estaca *B, Estaca *C);
 int venceu(Estaca *C, int total_discos);
 Estaca* getEstaca(char c, Estaca *A, Estaca *B, Estaca *C);
 void jogarHanoi();
-
-
-
-// --- Estrutura de Dados do Histórico de Partidas ---
 
 typedef struct HistoricoPartida {
     int movimentos;
